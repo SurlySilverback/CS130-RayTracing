@@ -44,9 +44,9 @@ Object* Render_World::Closest_Intersection(const Ray& ray, Hit& hit)
           // FIXME: Verify that this is the correct condition: not sure if hit.t
           // is a vector of Hit object and needs to be referenced using .at(i), or
           // if it is a single Hit object
-          if ( hits.at(i).t < hit.t && hits.at(i).t > small_t )
+          if ( hits.at(j).t < hit.t && hits.at(j).t > small_t )
           {
-            hit = hits.at(i);
+            hit = hits.at(j);
             nearest_object = objects.at(i);
           }
         }
