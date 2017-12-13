@@ -29,10 +29,10 @@ Intersection(const Ray& ray, std::vector<Hit>& hits) const
     {
       t = -( dot( normal, ( ray.endpoint - x1 ) ) ) / ( dot( normal, ray.direction ) );
 
-      if ( t <= 0.0 )
+      if ( t < 0.0 )
         return false;
 
-      else if ( t > 0.0 )
+      else if ( t >= 0.0 )
       {
         Hit h = { this, t, false };
         hits.push_back( h );

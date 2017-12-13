@@ -102,6 +102,9 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
       // Get the normal of the intersection point
       vec3 normal = hit.object->Normal( ray.Point(hit.t) );
 
+      if ( hit.ray_exiting )
+        normal = normal * -1.0;
+
       // Determine the colour of the surface pixel using the ray, the point, the normal information,
       // and the recursion depth (in the case that the intersecting ray was itself cast from another
       // reflection).

@@ -35,7 +35,7 @@ bool Sphere::Intersection(const Ray& ray, std::vector<Hit>& hits) const
       //double t = -( dot( ray.direction, ray.endpoint - center ) ) / dot( ray.direction, ray.direction );
       double t = (-( dot( w, v ) ) + sqrt( discriminant )) / dot( w, w );
 
-      Hit h1 = { this, t, true };
+      Hit h1 = { this, t, false };
       hits.push_back( h1 );
 
       return true;
@@ -71,7 +71,7 @@ bool Sphere::Intersection(const Ray& ray, std::vector<Hit>& hits) const
 
 vec3 Sphere::Normal(const vec3& point) const
 {
-    vec3 normal;
-    // TODO: set the normal
+    vec3 normal = ( point - this->center );
+
     return normal;
 }

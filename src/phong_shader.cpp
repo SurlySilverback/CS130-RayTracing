@@ -22,33 +22,33 @@ Shade_Surface(const Ray& ray,const vec3& intersection_point,
     // I = intensity of light source, n = unit vector of surface normal,
     // l = unit vector pointing towards light source.
 
-    vec3 light_color;       // Stores the light intensity of each light source based on its distance from the surface.
-    vec3 diffuse = {0,0,0}; // Stores the final diffuse value.
+    vec3 light_color;         // Stores the light intensity of each light source based on its distance from the surface.
+    vec3 diffuse = {0,0,0};   // Stores the final diffuse value.
+    vec3 specular = {0,0,0};  // Stores the final specular value.
 
     vec3 n = same_side_normal.normalized();
-    vec3 l;
+    vec3 l;                   // Stores the direction of the light source with respect to the surface.
+    vec3 r;                   // Stores the direction of the reflection with respect to the surface.
+    vec3 v;                   //
+
+    vec3 ambient = world.ambient_intensity * world.ambient_color * this->color_ambient;
 
     // For all of the lights in the scene
     for ( unsigned i = 0; i < world.lights.size(); ++i )
     {
       light_color = ( world.lights.at(i)->Emitted_Light( ray ) ) / ( ( world.lights.at(i)->position - intersection_point ).magnitude_squared() );
 
-      std::cout << "light_colour is " << light_color << std::endl;
+      l = ( world.lights.at(i)->position - intersection_point ).normalized();
+      r = ( 2.0 * dot( l, n ) * n - l ).normalized();
+      v = ( world.camera.position - intersection_point ).normalized();
 
-      l = (world.lights.at(i)->position - intersection_point).normalized();
-
-      std::cout << "l is " << l << std::endl;
-
-      // Calculate the pixel's total diffuse as the sum of all of the lights'
+      // Calculate the pixel's total diffuse and specular as the sum of all of the lights'
       // effect on the intersection point.
       diffuse += std::max( 0.0, dot( n , l ) ) * light_color * color_diffuse;
-
-      std::cout << "diffuse(sum) is " << diffuse << std::endl << std::endl;
+      specular += std::pow( std::max( 0.0, dot( v, r ) ), specular_power ) * light_color * color_specular;
     }
 
-    //vec3 specular =
-
-    color = diffuse;
+    color = ambient + diffuse + specular;
 
     return color;
 }
